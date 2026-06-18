@@ -4,63 +4,64 @@
 # so the glow reads as words). `tag` is the small caption line beneath it.
 #
 # Mix of: stealthy/cloak-capable EVE ships WINGSPAN flies, torpedo/bomb modules
-# & ammo, covert-ops skills, and WINGSPAN / New Eden catchphrases. The tags are
-# in WINGSPAN's customer-service-with-a-warhead house voice.
+# & ammo, covert-ops skills, and WINGSPAN / New Eden catchphrases. The tags play
+# the role straight: WINGSPAN is a cheerful courier that delivers ordnance, and
+# your destruction is simply a successfully completed delivery.
 
 PHRASES = [
     # --- WINGSPAN / New Eden catchphrases ---
-    ("Delivery Initiated",                 "your package is already in warp"),
-    ("Customer Service V",                 "our one hiring requirement, non-negotiable"),
-    ("The age of fear is over",            "everyone's equally afraid now"),
-    ("Wherever you fly, WINGSPAN flies with you", "yes, even there. especially there"),
-    ("New Eden's #1 Delivery Corp",        "ranked by tonnage of wrecks"),
-    ("We're not happy until you're content", "and you're so rarely content"),
+    ("Delivery Initiated",                 "your package is on the way!"),
+    ("Customer Service V",                 "the only certification we require — smile included"),
+    ("The age of fear is over",            "relax! we'll take it from here"),
+    ("Wherever you fly, WINGSPAN flies with you", "complimentary escort, no opt-out"),
+    ("New Eden's #1 Delivery Corp",        "five stars, rated by us"),
+    ("We're not happy until you're content", "satisfaction guaranteed — mostly ours"),
     ("Torpedo Delivery",                   "no signature required"),
-    ("Special Delivery",                   "you didn't order this. that's the fun part"),
-    ("Bombs Away",                         "please remain exactly where you are"),
-    ("Cloak. Bomb. Deliver.",              "in that order, every single time"),
-    ("o7",                                 "the last thing in local before the boom"),
+    ("Special Delivery",                   "a little something we picked just for you"),
+    ("Bombs Away",                         "please remain stationary, for our safety and yours"),
+    ("Cloak. Bomb. Deliver.",              "our three-step satisfaction process"),
+    ("o7",                                 "thank you for choosing WINGSPAN"),
 
     # --- Stealth bombers (the WINGSPAN workhorses) ---
-    ("Manticore",                          "it was already behind you"),
-    ("Hound",                              "you never heard it coming"),
-    ("Purifier",                           "tidying up your killboard"),
-    ("Nemesis",                            "yours, personally"),
+    ("Manticore",                          "your friendly neighborhood courier"),
+    ("Hound",                              "express delivery, no doorbell required"),
+    ("Purifier",                           "complimentary killboard cleanup"),
+    ("Nemesis",                            "handling your order personally"),
 
     # --- Covert ops & recon (cloak-capable) ---
-    ("Buzzard",                            "it found your wormhole. it told everyone"),
-    ("Cheetah",                            "gone before you finished typing 'where'"),
-    ("Helios",                             "currently reading your fit"),
-    ("Anathema",                           "the last blip your d-scan ever saw"),
-    ("Astero",                             "small, friendly, lying to you"),
-    ("Stratios",                           "an exploration ship. you're the site"),
-    ("Falcon",                             "your guns don't work anymore, sorry"),
-    ("Rapier",                             "you're not going anywhere"),
-    ("Arazu",                              "warp? we'd really rather you didn't"),
-    ("Pilgrim",                            "your capacitor belongs to us now"),
-    ("Loki",                               "whatever ruins your day fastest"),
-    ("Sin",                                "the bridge was open before you landed"),
-    ("Widow",                              "your overview just went quiet, hm?"),
-    ("Panther",                            "it jumped in just for you"),
+    ("Buzzard",                            "locating your delivery address now"),
+    ("Cheetah",                            "good news — we're already in the area!"),
+    ("Helios",                             "just confirming your shipping details"),
+    ("Anathema",                           "your courier has arrived (quietly)"),
+    ("Astero",                             "small, friendly, fully insured (we are)"),
+    ("Stratios",                           "here to explore your fitting options"),
+    ("Falcon",                             "for your convenience, your weapons are now offline"),
+    ("Rapier",                             "please hold still — delivery in progress"),
+    ("Arazu",                              "kindly remain at your current location"),
+    ("Pilgrim",                            "we'll take that excess capacitor off your hands"),
+    ("Loki",                               "whatever your delivery requires"),
+    ("Sin",                                "the bridge is open — step right up"),
+    ("Widow",                              "we've muted your notifications for you"),
+    ("Panther",                            "we made a special trip, just for this"),
     ("Redeemer",                           "salvation, billed to your clone"),
 
     # --- Modules / ammo / bombs ---
-    ("Covert Ops Cloaking Device II",      "can't shoot what's politely invisible"),
-    ("Bomb Launcher",                      "area-of-effect customer care"),
-    ("Scourge Torpedo",                    "kinetic, straight to the face"),
-    ("Mjolnir Torpedo",                    "EM, for the shield-tanked optimist"),
-    ("Inferno Torpedo",                    "thermal, slow-roasted"),
-    ("Nova Torpedo",                       "explosive — the honest one"),
-    ("Shrapnel Bomb",                      "for the whole fleet. you shouldn't have"),
+    ("Covert Ops Cloaking Device II",      "discreet, unmarked delivery vehicle"),
+    ("Bomb Launcher",                      "now serving your entire fleet"),
+    ("Scourge Torpedo",                    "kinetic, gift-wrapped"),
+    ("Mjolnir Torpedo",                    "EM, for our shield-tanked customers"),
+    ("Inferno Torpedo",                    "thermal, served warm"),
+    ("Nova Torpedo",                       "explosive — the house special"),
+    ("Shrapnel Bomb",                      "one for you and everyone you brought"),
     ("Void Bomb",                          "your capacitor: gone. you're welcome"),
-    ("Warp Disruptor",                     "stay a while. stay forever"),
-    ("Stasis Webifier",                    "you're not slow, you're just held"),
+    ("Warp Disruptor",                     "please don't leave before your delivery arrives"),
+    ("Stasis Webifier",                    "for your safety, we've reduced your speed"),
 
     # --- Covert-ops skills (WINGSPAN flight school) ---
-    ("Cloaking V",                         "five years of simply not being there"),
-    ("Covert Ops V",                       "we skipped the tutorial too"),
-    ("Torpedoes V",                        "fully delivery-certified"),
+    ("Cloaking V",                         "certified discreet handling"),
+    ("Covert Ops V",                       "fully trained, fully invisible"),
+    ("Torpedoes V",                        "delivery certification, maxed"),
 
     # --- and a regard ---
-    ("Paul Clavet sends his regards",      "you'll find him on the killmail"),
+    ("Paul Clavet sends his regards",      "o7"),
 ]
