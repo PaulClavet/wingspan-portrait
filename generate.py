@@ -295,14 +295,29 @@ HTML_TMPL = """<!DOCTYPE html>
     (groups[el.dataset.q] || (groups[el.dataset.q] = [])).push(el);
   }});
 
-  let idx = -1, faded = true, timer = null, activeEls = [];
+  // Decloak in a random order — a shuffled run through every phrase, reshuffled
+  // once the run is exhausted, so you see all of them but never in a fixed order.
+  function shuffle(a) {{
+    for (let i = a.length - 1; i > 0; i--) {{
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }}
+    return a;
+  }}
+  let order = shuffle([...Array(PHRASES.length).keys()]);
+  let pos = -1, faded = true, timer = null, activeEls = [];
+
+  function advance() {{
+    pos++;
+    if (pos >= order.length) {{ shuffle(order); pos = 0; }}
+    light(order[pos]);
+  }}
 
   function clearActive() {{
     for (const e of activeEls) e.classList.remove('active');
     activeEls = [];
   }}
   function light(i) {{
-    idx = i;
     clearActive();
     activeEls = groups[i] || [];
     for (const e of activeEls) e.classList.add('active');
@@ -311,7 +326,7 @@ HTML_TMPL = """<!DOCTYPE html>
     caption.innerHTML = '<div class="q">' + p.text + '</div>' +
                         '<div class="a">' + p.tag + '</div>';
     caption.style.opacity = '1';
-    counter.textContent = (i + 1) + ' / ' + PHRASES.length + '  \\u00b7  click for the next';
+    counter.textContent = (pos + 1) + ' / ' + order.length + '  \\u00b7  click for the next';
     clearBtn.classList.add('show');
     faded = false;
     clearTimeout(timer);
@@ -328,8 +343,8 @@ HTML_TMPL = """<!DOCTYPE html>
   }}
 
   art.addEventListener('click', () => {{
-    if (faded) light(idx < 0 ? 0 : idx);
-    else light((idx + 1) % PHRASES.length);
+    if (faded) (pos < 0) ? advance() : light(order[pos]);  // re-show the faded one
+    else advance();                                        // still reading -> next
   }});
   clearBtn.addEventListener('click', (e) => {{ e.stopPropagation(); fade(); }});
   document.addEventListener('click', (e) => {{

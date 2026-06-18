@@ -160,7 +160,7 @@
   <button class="clearbtn" id="clear">Recloak</button>
 
 <script>
-  const PHRASES = [{"text": "Delivery Initiated", "tag": "WINGSPAN Delivery Services"}, {"text": "Customer Service V", "tag": "the one skill we require"}, {"text": "The age of fear is over", "tag": "WINGSPAN Delivery Services"}, {"text": "Wherever you fly, WINGSPAN flies with you", "tag": "WINGSPAN Delivery Services"}, {"text": "New Eden's #1 Delivery Corp", "tag": "WINGSPAN Delivery Services"}, {"text": "We're not happy until you're content", "tag": "WINGSPAN Delivery Services"}, {"text": "Torpedo Delivery", "tag": "signed, sealed, delivered"}, {"text": "Special Delivery", "tag": "right to your hull"}, {"text": "Bombs Away", "tag": "WINGSPAN Delivery Services"}, {"text": "Cloak. Bomb. Deliver.", "tag": "the WINGSPAN way"}, {"text": "o7", "tag": "fly reckless"}, {"text": "Manticore", "tag": "Caldari Stealth Bomber"}, {"text": "Hound", "tag": "Minmatar Stealth Bomber"}, {"text": "Purifier", "tag": "Amarr Stealth Bomber"}, {"text": "Nemesis", "tag": "Gallente Stealth Bomber"}, {"text": "Buzzard", "tag": "Caldari Covert Ops"}, {"text": "Cheetah", "tag": "Minmatar Covert Ops"}, {"text": "Helios", "tag": "Gallente Covert Ops"}, {"text": "Anathema", "tag": "Amarr Covert Ops"}, {"text": "Astero", "tag": "Covert Ops Frigate"}, {"text": "Stratios", "tag": "Covert Ops Cruiser"}, {"text": "Falcon", "tag": "Caldari Force Recon"}, {"text": "Rapier", "tag": "Minmatar Force Recon"}, {"text": "Arazu", "tag": "Gallente Force Recon"}, {"text": "Pilgrim", "tag": "Amarr Force Recon"}, {"text": "Loki", "tag": "Strategic Cruiser, covert"}, {"text": "Sin", "tag": "Gallente Black Ops"}, {"text": "Widow", "tag": "Caldari Black Ops"}, {"text": "Panther", "tag": "Minmatar Black Ops"}, {"text": "Redeemer", "tag": "Amarr Black Ops"}, {"text": "Covert Ops Cloaking Device II", "tag": "module"}, {"text": "Bomb Launcher", "tag": "module"}, {"text": "Scourge Torpedo", "tag": "kinetic torpedo"}, {"text": "Mjolnir Torpedo", "tag": "EM torpedo"}, {"text": "Inferno Torpedo", "tag": "thermal torpedo"}, {"text": "Nova Torpedo", "tag": "explosive torpedo"}, {"text": "Shrapnel Bomb", "tag": "kinetic bomb"}, {"text": "Void Bomb", "tag": "capacitor bomb"}, {"text": "Warp Disruptor", "tag": "module"}, {"text": "Stasis Webifier", "tag": "module"}, {"text": "Cloaking V", "tag": "covert ops skill"}, {"text": "Covert Ops V", "tag": "covert ops skill"}, {"text": "Torpedoes V", "tag": "weapon skill"}, {"text": "Paul Clavet sends his regards", "tag": "o7"}];
+  const PHRASES = [{"text": "Delivery Initiated", "tag": "your package is already in warp"}, {"text": "Customer Service V", "tag": "our one hiring requirement, non-negotiable"}, {"text": "The age of fear is over", "tag": "everyone's equally afraid now"}, {"text": "Wherever you fly, WINGSPAN flies with you", "tag": "yes, even there. especially there"}, {"text": "New Eden's #1 Delivery Corp", "tag": "ranked by tonnage of wrecks"}, {"text": "We're not happy until you're content", "tag": "and you're so rarely content"}, {"text": "Torpedo Delivery", "tag": "no signature required"}, {"text": "Special Delivery", "tag": "you didn't order this. that's the fun part"}, {"text": "Bombs Away", "tag": "please remain exactly where you are"}, {"text": "Cloak. Bomb. Deliver.", "tag": "in that order, every single time"}, {"text": "o7", "tag": "the last thing in local before the boom"}, {"text": "Manticore", "tag": "it was already behind you"}, {"text": "Hound", "tag": "you never heard it coming"}, {"text": "Purifier", "tag": "tidying up your killboard"}, {"text": "Nemesis", "tag": "yours, personally"}, {"text": "Buzzard", "tag": "it found your wormhole. it told everyone"}, {"text": "Cheetah", "tag": "gone before you finished typing 'where'"}, {"text": "Helios", "tag": "currently reading your fit"}, {"text": "Anathema", "tag": "the last blip your d-scan ever saw"}, {"text": "Astero", "tag": "small, friendly, lying to you"}, {"text": "Stratios", "tag": "an exploration ship. you're the site"}, {"text": "Falcon", "tag": "your guns don't work anymore, sorry"}, {"text": "Rapier", "tag": "you're not going anywhere"}, {"text": "Arazu", "tag": "warp? we'd really rather you didn't"}, {"text": "Pilgrim", "tag": "your capacitor belongs to us now"}, {"text": "Loki", "tag": "whatever ruins your day fastest"}, {"text": "Sin", "tag": "the bridge was open before you landed"}, {"text": "Widow", "tag": "your overview just went quiet, hm?"}, {"text": "Panther", "tag": "it jumped in just for you"}, {"text": "Redeemer", "tag": "salvation, billed to your clone"}, {"text": "Covert Ops Cloaking Device II", "tag": "can't shoot what's politely invisible"}, {"text": "Bomb Launcher", "tag": "area-of-effect customer care"}, {"text": "Scourge Torpedo", "tag": "kinetic, straight to the face"}, {"text": "Mjolnir Torpedo", "tag": "EM, for the shield-tanked optimist"}, {"text": "Inferno Torpedo", "tag": "thermal, slow-roasted"}, {"text": "Nova Torpedo", "tag": "explosive — the honest one"}, {"text": "Shrapnel Bomb", "tag": "for the whole fleet. you shouldn't have"}, {"text": "Void Bomb", "tag": "your capacitor: gone. you're welcome"}, {"text": "Warp Disruptor", "tag": "stay a while. stay forever"}, {"text": "Stasis Webifier", "tag": "you're not slow, you're just held"}, {"text": "Cloaking V", "tag": "five years of simply not being there"}, {"text": "Covert Ops V", "tag": "we skipped the tutorial too"}, {"text": "Torpedoes V", "tag": "fully delivery-certified"}, {"text": "Paul Clavet sends his regards", "tag": "you'll find him on the killmail"}];
   const HOLD = 14000;
   const stage = document.getElementById('stage');
   const art = document.getElementById('art');
@@ -173,14 +173,29 @@
     (groups[el.dataset.q] || (groups[el.dataset.q] = [])).push(el);
   });
 
-  let idx = -1, faded = true, timer = null, activeEls = [];
+  // Decloak in a random order — a shuffled run through every phrase, reshuffled
+  // once the run is exhausted, so you see all of them but never in a fixed order.
+  function shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+  let order = shuffle([...Array(PHRASES.length).keys()]);
+  let pos = -1, faded = true, timer = null, activeEls = [];
+
+  function advance() {
+    pos++;
+    if (pos >= order.length) { shuffle(order); pos = 0; }
+    light(order[pos]);
+  }
 
   function clearActive() {
     for (const e of activeEls) e.classList.remove('active');
     activeEls = [];
   }
   function light(i) {
-    idx = i;
     clearActive();
     activeEls = groups[i] || [];
     for (const e of activeEls) e.classList.add('active');
@@ -189,7 +204,7 @@
     caption.innerHTML = '<div class="q">' + p.text + '</div>' +
                         '<div class="a">' + p.tag + '</div>';
     caption.style.opacity = '1';
-    counter.textContent = (i + 1) + ' / ' + PHRASES.length + '  \u00b7  click for the next';
+    counter.textContent = (pos + 1) + ' / ' + order.length + '  \u00b7  click for the next';
     clearBtn.classList.add('show');
     faded = false;
     clearTimeout(timer);
@@ -206,8 +221,8 @@
   }
 
   art.addEventListener('click', () => {
-    if (faded) light(idx < 0 ? 0 : idx);
-    else light((idx + 1) % PHRASES.length);
+    if (faded) (pos < 0) ? advance() : light(order[pos]);  // re-show the faded one
+    else advance();                                        // still reading -> next
   });
   clearBtn.addEventListener('click', (e) => { e.stopPropagation(); fade(); });
   document.addEventListener('click', (e) => {
