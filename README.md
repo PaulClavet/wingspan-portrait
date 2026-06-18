@@ -39,6 +39,15 @@ data-q="N"`; a tiny inline script raises and re-colours just the active phrase's
 spans while one overlay element dims the rest, so nothing animates ~16k glyphs at
 once.
 
+**Hiding the text.** The wing isn't filled with solid blocks — it's a noisy field
+of letters/digits/punctuation in mixed case (the same trick as the Hypatia
+portrait). A hidden letter is drawn from the same alphabet, cased by the same rule,
+and coloured the same as its neighbours, so it's indistinguishable from filler
+until it lights up. Hypatia drove the case + glyph weight off the photo's
+luminance; a flat logo has none, so here it's driven by the ink coverage plus a
+deterministic per-cell hash (`rnd()`), which keeps glyphs of every weight in every
+region — nothing about a letter's shape or case betrays it.
+
 ## Regenerating
 
 The art is generated from the wing logo by [`generate.py`](generate.py)

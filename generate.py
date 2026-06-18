@@ -28,20 +28,35 @@ BG_THRESH    = 0.14     # ink coverage below this == background (void)
 PAD          = 6        # px padding around the ink bounding box before sampling
 ORANGE       = (245, 133, 38)   # WINGSPAN brand orange (#F58526)
 
-# light -> dense ramp used for the un-lettered ("gap") ink cells and the void
-RAMP = " .:-=+oaxszkXKO0Q#%&@"
-# faint void texture (a sparse starfield), keyed off a cheap per-cell hash;
-# mostly spaces so the wing floats on near-empty void
+# The camouflage trick (lifted from Hypatia): the wing is NOT filled with solid
+# blocks. It's a noisy field of letters/digits/punctuation in mixed case, ordered
+# light -> dense. A hidden letter is then statistically identical to a filler
+# letter — same alphabet, same case rule, same colour — so it only shows when lit.
+RAMP = ("`.'·,:;\"^!|Iil*r/\\<>()[]{}_+=?~-"   # light: thin punctuation
+        "cvxznutfjsy7213"                            # mid: lowercase + slim digits
+        "eaoLJTYUCFP4Z5wmq"                          # heavier lowercase / open caps
+        "pdbkhg69OQ0DGHSAE8RNBWM")                   # dense caps + round digits
+RAMP_LO = 0.16    # ink cells never drop below here, so the wing has no holes
+RAMP_TOP = 0.88   # ...nor all the way to the heaviest glyph: keeps the field airy
+SPREAD  = 0.42    # how far the per-cell noise pushes a glyph off its coverage
+
+# faint void texture (a sparse starfield); mostly spaces so the wing floats
 VOID_GLYPHS = "   .   :   '    .   `      "
 
 MARKER_OK = lambda c: c.isalnum()   # letters & digits glow; spaces/punct = gaps
 
 
+def rnd(x, y, salt=0):
+    """Deterministic pseudo-random in [0,1) — stable rebuilds, no Math.random."""
+    h = (x * 73856093) ^ (y * 19349663) ^ (salt * 0x9e3779b1)
+    h &= 0xFFFFFFFF
+    h = ((h ^ (h >> 16)) * 0x45d9f3b) & 0xFFFFFFFF
+    h = ((h ^ (h >> 16)) * 0x45d9f3b) & 0xFFFFFFFF
+    return ((h ^ (h >> 16)) & 0xFFFFFFFF) / 0x100000000
+
+
 def cell_hash(x, y):
-    """Deterministic pseudo-random in [0,1) — no Math.random, stable rebuilds."""
-    h = (x * 73856093) ^ (y * 19349663)
-    h = (h * 0x45d9f3b) & 0xFFFFFFFF
-    return h / 0xFFFFFFFF
+    return rnd(x, y, 11)
 
 
 def load_grid(cols):
@@ -93,9 +108,24 @@ def void_color(x, y):
     return (base, base, base + 3)
 
 
-def ramp_glyph(c):
-    i = int(c * (len(RAMP) - 1) + 0.5)
+def ramp_glyph(c, x, y):
+    """A coverage-driven glyph, jittered by per-cell noise so every region holds
+    glyphs of every weight (no smooth gradient to read the hidden text against)."""
+    frac = RAMP_LO + c * (RAMP_TOP - RAMP_LO) + (rnd(x, y, 1) - 0.5) * SPREAD
+    frac = min(1.0, max(RAMP_LO, frac))
+    i = int(frac * (len(RAMP) - 1) + 0.5)
     return RAMP[min(len(RAMP) - 1, max(0, i))]
+
+
+def cased(ch, c, x, y):
+    """Case a hidden letter the way Hypatia did: denser/brighter cells lean
+    UPPER, fainter cells lower, with ~18% noise so case never betrays the text."""
+    if not ch.isalpha():
+        return ch
+    upper = (c + (rnd(x, y, 2) - 0.5) * 0.6) > 0.62
+    if rnd(x, y, 7) < 0.18:        # random flips, matched to the filler's mix
+        upper = not upper
+    return ch.upper() if upper else ch.lower()
 
 
 def build_cells(small, cols, rows):
@@ -109,10 +139,11 @@ def build_cells(small, cols, rows):
             idx = len(cells)
             if c < BG_THRESH:
                 g = VOID_GLYPHS[int(cell_hash(x, y) * len(VOID_GLYPHS)) % len(VOID_GLYPHS)]
-                cells.append({"g": g, "col": void_color(x, y), "ink": False, "q": None})
+                cells.append({"g": g, "col": void_color(x, y), "ink": False,
+                              "q": None, "c": c, "x": x, "y": y})
             else:
-                cells.append({"g": ramp_glyph(c), "col": ink_color(c, x, y),
-                              "ink": True, "c": c, "q": None})
+                cells.append({"g": ramp_glyph(c, x, y), "col": ink_color(c, x, y),
+                              "ink": True, "c": c, "x": x, "y": y, "q": None})
                 writable.append(idx)
     return cells, writable
 
@@ -140,16 +171,13 @@ def weave(cells, writable, phrases):
                 break
             cell = cells[writable[w]]
             if MARKER_OK(ch):
-                # keep the painterly mixed case: dense cells UPPER, faint lower
-                glyph = ch.upper() if cell.get("c", 0) > 0.6 else ch.lower()
-                if not ch.isalpha():
-                    glyph = ch
-                cell["g"] = glyph
+                # the hidden letter, cased to blend into the surrounding field
+                cell["g"] = cased(ch, cell["c"], cell["x"], cell["y"])
                 cell["q"] = i
                 any_marker = True
             else:
-                # space / punctuation -> unlit gap (plain orange ink glyph)
-                cell["g"] = ramp_glyph(cell.get("c", 0.8))
+                # space / punctuation -> unlit gap, same noisy field as the filler
+                cell["g"] = ramp_glyph(cell["c"], cell["x"], cell["y"])
                 cell["q"] = None
             w += 1
         if any_marker:
