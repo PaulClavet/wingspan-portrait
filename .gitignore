@@ -1,0 +1,9 @@
+# build / dev artifacts
+.venv/
+get-pip.py
+__pycache__/
+*.pyc
+
+# transient screenshot + lit-state scratch files (preview.png is committed)
+._lit*.html
+shot-*.png
